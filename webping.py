@@ -15,11 +15,12 @@ import pycurl
 cmd_chrome = "/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome " 
 cmd_chrome += "--headless --disable-gpu --screenshot %s"
 cmd_airport = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I"
-cmd_curl_influx = "curl -i -XPOST \"http://189.76.124.2:8086/write?db=evento&u=agente&p=evento201705\" --data-binary @influx.txt"
+cmd_curl_influx = 'curl -i -XPOST "http://189.76.124.2:8086/write?db=evento&u=agente&p=evento201705" --data-binary @influx2.txt'
 ### 
 
 FNULL = open(os.devnull, 'w')
-influx_file = open("influx.txt", "w")
+influx_file = open("influx.txt", "a")
+influx_file2 = open("influx2.txt", "w")
 
 def mean(numbers):
 	"""Calcular el promedio de un array de numeros"""
@@ -44,7 +45,7 @@ def get_wifi_info():
 	bssid = 'noname_bssid'
 	wifi_raw_data = subprocess.check_output(cmd_airport, shell=True)
 	rd1 = wifi_raw_data.split("\n")
-	print len(rd1)
+	#print len(rd1)
 	for ff in rd1:
 		rd2 = ff.split(":")
 		#print rd2,len(rd2)
@@ -54,10 +55,10 @@ def get_wifi_info():
 			f2 = rd2[1].strip()
 			#print rd2
 			if f1.endswith("SSID"):
-				ssid = f2
+				ssid = f2.replace(" ", "_")
 			if f1.endswith("BSSID"):
 				bssid = ":".join(rd2[1:6])
-				bssid = bssid.strip()
+				bssid = bssid.strip().replace(" ", "_")
 	# end for
 	return [ssid,bssid]
 	
@@ -87,6 +88,7 @@ def webping(count, url, output):
 	print "Pinged %s times from source %s, avg dt is %s" % (count, src, avgtime)
 	# print influx line
 	influx_file.write("webping,url=%s,uname=%s,ssid=%s,bssid=%s loadtime=%s %s000000000\n" % (url, src['username'], src['ssid'], src['bssid'], avgtime, avgts ))
+	influx_file2.write("webping,url=%s,uname=%s,ssid=%s,bssid=%s loadtime=%s %s000000000\n" % (url, src['username'], src['ssid'], src['bssid'], avgtime, avgts ))
 	subprocess.call(cmd_curl_influx, shell=True)	
 # end webping
         
