@@ -14,7 +14,7 @@ cmd_chrome += "--headless --disable-gpu --screenshot %s"
 FNULL = open(os.devnull, 'w')
 
 def mean(numbers):
-	"""Calcular el promedio de un array de números"""
+	"""Calcular el promedio de un array de numeros"""
 	return float(sum(numbers)) / max(len(numbers), 1)
 
 @click.command()
