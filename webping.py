@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # webping.py
 # (c) carlos@lacnic.net 20170522
 #
