@@ -17,6 +17,11 @@ def mean(numbers):
 	"""Calcular el promedio de un array de numeros"""
 	return float(sum(numbers)) / max(len(numbers), 1)
 
+def get_measurement_source():
+	src = ""
+	src = os.uname[1]
+## end get_measurement_source
+
 @click.command()
 @click.option('--count', default=1, help='Numero de pruebas a realizar')
 @click.option('--url', default='https://www.google.com',
@@ -35,7 +40,8 @@ def webping(count, url, output):
 		print "%s | %s " % (t0, t1-t0)
 	# end for
 	# print summary
-	print "Pinged %s times, avg dt is %s" % (count, mean(measurements['dt']))
+	src = get_measurement_source()
+	print "Pinged %s times from source %s, avg dt is %s" % (count, src, mean(measurements['dt']))
 
         
 # end webping
