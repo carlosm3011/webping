@@ -19,7 +19,8 @@ def mean(numbers):
 
 def get_measurement_source():
 	src = ""
-	src = os.uname[1]
+	uname = os.uname()
+	return uname[1]
 ## end get_measurement_source
 
 @click.command()
