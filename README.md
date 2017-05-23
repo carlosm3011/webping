@@ -5,6 +5,15 @@ Web page ping based on Chrome headless mode and some python
 
 Run:
 
+It's **optional but recommended** to install webping.py inside a python "virtualenv":
+
+```
+virtualenvt wp
+source wp/bin/activate
+```
+
+Then, install the script and dependencies:
+
 ```
 pip install git+https://github.com/carlosm3011/webping
 ```
