@@ -19,5 +19,6 @@ do
 	webping.py --count=3 --url="https://eventos.lacnic.net"
 	echo sleeping...
 	sleep 60
-end
+done
+
 ```
