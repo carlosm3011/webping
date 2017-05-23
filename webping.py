@@ -20,7 +20,7 @@ cmd_curl_influx = 'curl -i -XPOST "http://189.76.124.2:8086/write?db=evento&u=ag
 
 FNULL = open(os.devnull, 'w')
 influx_file = open("influx.txt", "a")
-influx_file2 = open("influx2.txt", "w")
+#influx_file2 = open("influx2.txt", "w")
 
 def mean(numbers):
 	"""Calcular el promedio de un array de numeros"""
@@ -87,10 +87,23 @@ def webping(count, url, output):
 	avgts = int(mean(measurements['t0']))
 	print "Pinged %s times from source %s, avg dt is %s" % (count, src, avgtime)
 	# print influx line
-	influx_file.write("webping,url=%s,uname=%s,ssid=%s,bssid=%s loadtime=%s %s000000000\n" % (url, src['username'], src['ssid'], src['bssid'], avgtime, avgts ))
-	influx_file2.write("webping,url=%s,uname=%s,ssid=%s,bssid=%s loadtime=%s %s000000000\n" % (url, src['username'], src['ssid'], src['bssid'], avgtime, avgts ))
-	subprocess.call(cmd_curl_influx, shell=True)	
+	influx_txt_line = "webping,url=%s,uname=%s,ssid=%s,bssid=%s loadtime=%s %s000000000\n" % (url, src['username'], src['ssid'], src['bssid'], avgtime, avgts )
+	influx_file.write(influx_txt_line)
+	# influx_file2.write(influx_txt_line)
+	influx_post(influx_txt_line)
 # end webping
+
+def influx_post(txtline):
+	# cmd_curl_influx = 'curl -i -XPOST "http://189.76.124.2:8086/write?db=evento&u=agente&p=evento201705" --data-binary @influx2.txt'
+	influx_url = 'http://189.76.124.2:8086/write?db=evento&u=agente&p=evento201705'
+	data = txtline
+	c = pycurl.Curl()
+	c.setopt(pycurl.URL, influx_url)
+	# c.setopt(pycurl.HTTPHEADER, ['X-Postmark-Server-Token: API_TOKEN_HERE','Accept: application/json'])
+	c.setopt(pycurl.POST, 1)
+	c.setopt(pycurl.POSTFIELDS, data)
+	return c.perform()
+# end influx post
         
 # end webping
 if __name__ == '__main__':
