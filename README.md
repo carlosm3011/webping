@@ -8,7 +8,7 @@ Run:
 It's **optional but recommended** to install webping.py inside a python "virtualenv":
 
 ```
-virtualenvt wp
+virtualenv wp
 source wp/bin/activate
 ```
 
