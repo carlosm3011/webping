@@ -1,6 +1,10 @@
 # webping
 Web page ping based on Chrome headless mode and some python
 
+## External dependencies
+
+Install Google Chrome version 59+, as it introduces the "headless" mode needed for the script.
+
 ## Installing
 
 Run:
